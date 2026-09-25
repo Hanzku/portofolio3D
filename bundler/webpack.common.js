@@ -2,6 +2,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   entry: path.resolve(__dirname, "../src/script.js"),
@@ -17,6 +18,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "../src/index.html"),
       minify: true,
+    }),
+    new webpack.DefinePlugin({
+      "process.env.WEB3FORMS_ACCESS_KEY": JSON.stringify(process.env.WEB3FORMS_ACCESS_KEY || ""),
     }),
     new MiniCSSExtractPlugin(),
   ],

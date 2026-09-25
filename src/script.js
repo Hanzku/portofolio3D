@@ -1,6 +1,11 @@
 import "./style.css";
 import Experience from "./Experience/Experience.js";
 
+const faviconLink = document.querySelector("link[data-favicon]");
+if (faviconLink) faviconLink.href = faviconLink.dataset.favicon;
+
+const WEB3FORMS_ACCESS_KEY = process.env.WEB3FORMS_ACCESS_KEY || "";
+
 const contactForm = document.getElementById("contact-form");
 const contactStatus = document.getElementById("contact-status");
 const contactSubmit = contactForm.querySelector('[type="submit"]');
