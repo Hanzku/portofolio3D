@@ -4,7 +4,6 @@ import Experience from "./Experience/Experience.js";
 const contactForm = document.getElementById("contact-form");
 const contactStatus = document.getElementById("contact-status");
 const contactSubmit = contactForm.querySelector('[type="submit"]');
-const web3FormsAccessKey = process.env.VITE_WEB3FORMS_ACCESS_KEY;
 
 const showContactMessage = (message, state = "") => {
   contactStatus.textContent = message;
@@ -29,26 +28,19 @@ contactForm.addEventListener("submit", async (event) => {
     contactForm.elements.email.focus();
     return;
   }
-  if (!web3FormsAccessKey) {
-    showContactMessage("Form kontak belum dikonfigurasi. Silakan kirim email langsung.", "error");
-    return;
-  }
-
   contactSubmit.disabled = true;
   contactSubmit.textContent = "Mengirim pesan...";
   showContactMessage("Mengirim pesan...");
 
   try {
-    const response = await fetch("https://api.web3forms.com/submit", {
+    const response = await fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
-        access_key: web3FormsAccessKey,
         name: values.name.trim(),
         email: values.email.trim(),
         subject: values.subject.trim(),
         message: values.message.trim(),
-        from_name: "Portofolio alfachridzy",
       }),
     });
     const result = await response.json();

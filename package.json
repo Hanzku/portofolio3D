@@ -5,6 +5,7 @@
   "scripts": {
     "build": "webpack --config ./bundler/webpack.prod.js",
     "dev": "webpack serve --config ./bundler/webpack.dev.js",
+    "dev:vercel": "vercel dev",
     "prod": "git switch prod; git merge main; git push; git switch main",
     "deploy": "vercel --prod"
   },
