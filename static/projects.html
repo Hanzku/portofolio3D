@@ -3,20 +3,86 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a43">
   <title>Proyek — alfachridzy</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 32px; color: #f7f2e8; background: #102a43; font: 16px/1.65 Arial, sans-serif; }
-    main { max-width: 760px; margin: 0 auto; }
-    p { color: #d6e1ee; }
-    h1 { color: #eda72d; }
-    article { padding: 18px; border: 1px solid #ffffff25; border-radius: 14px; background: #ffffff0c; }
+    body {
+      margin: 0;
+      padding: clamp(20px, 3.5vw, 42px);
+      color: #f7f2e8;
+      background: radial-gradient(circle at top right, #245374 0, transparent 38%), #102a43;
+      font: 15px/1.55 Arial, sans-serif;
+    }
+    main { max-width: 1200px; margin: 0 auto; }
+    .eyebrow { margin: 0 0 8px; color: #ffd27f; font-size: 11px; font-weight: 700; letter-spacing: .14em; }
+    h1 { margin: 0; color: #eda72d; font-size: clamp(30px, 4vw, 44px); line-height: 1.1; }
+    .intro { max-width: 720px; margin: 12px 0 26px; color: #d6e1ee; }
+    h2 { margin: 24px 0 12px; color: #ffd27f; font-size: 17px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    article {
+      min-height: 142px;
+      padding: 16px;
+      border: 1px solid #ffffff25;
+      border-radius: 14px;
+      background: #ffffff0c;
+    }
+    .number { color: #eda72d; font-size: 11px; font-weight: 700; letter-spacing: .1em; }
+    h3 { margin: 8px 0 6px; color: #f7f2e8; font-size: 16px; }
+    article p { margin: 0; color: #d6e1ee; font-size: 13px; }
+    .joke { margin-top: 20px; color: #ffd27f; font-size: 13px; }
+    @media (max-width: 760px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 480px) {
+      body { padding: 22px 16px; }
+      .grid { grid-template-columns: 1fr; }
+      article { min-height: 0; }
+    }
   </style>
 </head>
 <body>
   <main>
-    <h1>Proyek</h1>
-    <article><p>Belum ada proyek yang ditambahkan. Bagian ini akan menampilkan karya saya setelah tersedia.</p></article>
+    <p class="eyebrow">KARYA &amp; PENGALAMAN</p>
+    <h1>Yang pernah saya kerjakan</h1>
+    <p class="intro">Tiga kali bikin website portofolio, dua kali praktik di lab TKJ. Bukan copy-paste—namanya juga iterasi. 😄</p>
+
+    <section aria-labelledby="web-projects">
+      <h2 id="web-projects">Website Portofolio</h2>
+      <div class="grid">
+        <article>
+          <span class="number">01 / WEB</span>
+          <h3>Portofolio Pertama</h3>
+          <p>Mulai dari menyusun halaman dan mengenal proses bikin website dari nol. Tombolnya diklik, berarti sukses—kurang lebih begitu.</p>
+        </article>
+        <article>
+          <span class="number">02 / WEB</span>
+          <h3>Portofolio Kedua</h3>
+          <p>Melanjutkan eksperimen dengan tampilan dan isi yang lebih rapi. Revisi kecil: 17. Revisi terakhir: katanya.</p>
+        </article>
+        <article>
+          <span class="number">03 / WEB</span>
+          <h3>Portofolio 3D</h3>
+          <p>Portofolio interaktif yang sedang kamu lihat ini. Kali ini bukan cuma scroll—ada dunia 3D yang bisa dijelajahi.</p>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="tkj-projects">
+      <h2 id="tkj-projects">Praktik Lab TKJ</h2>
+      <div class="grid">
+        <article>
+          <span class="number">01 / TKJ</span>
+          <h3>Eksplorasi Lab #1</h3>
+          <p>Pengalaman praktik pertama di lab TKJ: belajar, mencoba, dan memahami materi langsung lewat perangkat.</p>
+        </article>
+        <article>
+          <span class="number">02 / TKJ</span>
+          <h3>Eksplorasi Lab #2</h3>
+          <p>Praktik berikutnya untuk menambah pengalaman teknis. Kalau ada kendala, cek dulu—kadang jawabannya sesederhana kabel.</p>
+        </article>
+      </div>
+    </section>
+
+    <p class="joke">Status proyek: masih dikembangkan. Seperti biasa, “sudah final” itu cuma branch sementara.</p>
   </main>
 </body>
 </html>
