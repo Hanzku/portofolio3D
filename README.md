@@ -1,1 +1,1 @@
-YaNToKeTS [YNTKTS] Yo Ndak Tau Kok Tanya Say
+YaNToKeTS [YNTKTS] Yo Ndak Tau Kok Tanya Saya
