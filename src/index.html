@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>alfachridzy — Portofolio 3D</title>
+    <meta name="description" content="Portofolio interaktif alfachridzy, siswa kelas XI TKJ.">
+    <link rel="icon" type="image/svg+xml" href="../static/assets/icons/alfachridzy.svg" />
+    <meta itemprop="name" content="alfachridzy — Portofolio 3D">
+    <meta itemprop="description" content="Portofolio interaktif alfachridzy, siswa kelas XI TKJ.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="alfachridzy — Portofolio 3D">
+    <meta name="twitter:description" content="Portofolio interaktif alfachridzy, siswa kelas XI TKJ.">
+
+    <meta property="og:site_name" content="alfachridzy — Portofolio 3D">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="alfachridzy — Portofolio 3D">
+    <meta property="og:description" content="Portofolio interaktif alfachridzy, siswa kelas XI TKJ.">
+</head>
+
+<body>
+    <div class="loadingScreen"> alfachridzy </div>
+    <div class="banner">
+        <button class="banner-link" id="leftMonitor" type="button">TENTANG SAYA</button>
+        <button class="banner-link" id="rightMonitor" type="button">PROYEK</button>
+        <button class="banner-link" id="arcadeMachine" type="button">MESIN ARCADE</button>
+        <button class="banner-link" id="whiteboard" type="button">PAPAN TULIS</button>
+        <button class="banner-link" id="rubikGroup" type="button">KUBUS RUBIK</button>
+        <button class="banner-link" id="contact" type="button">KONTAK</button>
+    </div>
+    <div class="audio-button">
+
+    </div>
+    <button class="circular-button" id="back-button" type="button" aria-label="Kembali"></button>
+    <div class="button-row" id="whiteboard-buttons">
+        <button class="circular-button-whiteboard whiteboard-selected" id="black-marker" type="button" aria-label="Spidol hitam"
+            style="background-image: url('/assets/svg/black-marker.svg');"></button>
+        <button class="circular-button-whiteboard" id="red-marker" type="button" aria-label="Spidol merah"
+            style="background-image: url('/assets/svg/red-marker.svg');"></button>
+        <button class="circular-button-whiteboard" id="green-marker" type="button" aria-label="Spidol hijau"
+            style="background-image: url('/assets/svg/green-marker.svg');"></button>
+        <button class="circular-button-whiteboard" id="blue-marker" type="button" aria-label="Spidol biru"
+            style="background-image: url('/assets/svg/blue-marker.svg');"></button>
+        <button class="circular-button-whiteboard" id="eraser" type="button" aria-label="Penghapus" style="background-image: url('/assets/svg/eraser.svg');"></button>
+    </div>
+    <div class="rubik-message">Klik dan geser kubus untuk memutarnya.</div>
+
+    <section class="contact-panel" id="contact-panel" aria-labelledby="contact-title" aria-hidden="true">
+        <div class="contact-card">
+            <button class="contact-close" id="contact-close" type="button" aria-label="Tutup panel kontak">×</button>
+            <p class="contact-eyebrow">PORTOFOLIO ALFACHRIDZY</p>
+            <h1 id="contact-title">Hubungi Saya</h1>
+            <div class="contact-details">
+                <p><span>Nama</span><strong>alfachridzy</strong></p>
+                <p><span>Kelas</span><strong>XI TKJ</strong></p>
+                <p><span>Email saya</span><a href="mailto:zandygege@gmail.com">zandygege@gmail.com</a></p>
+            </div>
+            <div class="contact-actions">
+                <a class="contact-email-link" href="mailto:zandygege@gmail.com">Kirim Email</a>
+                <button class="contact-copy" id="copy-email" type="button">Salin Email</button>
+            </div>
+            <form class="contact-form" id="contact-form" novalidate>
+                <label>Nama<input name="name" type="text" autocomplete="name" required></label>
+                <label>Email<input name="email" type="email" autocomplete="email" required></label>
+                <label>Subjek<input name="subject" type="text" required></label>
+                <label>Pesan<textarea name="message" rows="3" required></textarea></label>
+                <button class="contact-submit" type="submit">Kirim Pesan</button>
+                <p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </section>
+
+    <div id="cssArcadeMachine"></div>
+    <div id="cssLeftMonitor"></div>
+    <div id="cssRightMonitor"></div>
+    <div id="webgl"></div>
+    <canvas id="drawing-canvas" width="2048" height="1024"></canvas>
+
+</body>
+
+</html>
