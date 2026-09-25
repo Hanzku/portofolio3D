@@ -3,23 +3,56 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a43">
   <title>Tentang Saya — alfachridzy</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 32px; color: #f7f2e8; background: #102a43; font: 16px/1.65 Arial, sans-serif; }
-    main { max-width: 760px; margin: 0 auto; }
-    p { color: #d6e1ee; }
-    h1, h2 { color: #eda72d; }
-    .tag { display: inline-block; padding: 6px 12px; border: 1px solid #eda72d80; border-radius: 99px; }
+    body {
+      margin: 0;
+      padding: clamp(24px, 5vw, 64px);
+      color: #f7f2e8;
+      background: radial-gradient(circle at top right, #245374 0, transparent 42%), #102a43;
+      font: 16px/1.75 Arial, sans-serif;
+    }
+    main { max-width: 860px; margin: 0 auto; }
+    .tag {
+      display: inline-block;
+      padding: 6px 13px;
+      border: 1px solid #eda72d80;
+      border-radius: 99px;
+      color: #ffd27f;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+    }
+    h1 { margin: 20px 0 12px; color: #eda72d; font-size: clamp(34px, 6vw, 58px); line-height: 1.08; }
+    h2 { margin-top: 36px; color: #ffd27f; font-size: 20px; }
+    p { max-width: 700px; color: #d6e1ee; }
+    .intro { font-size: 19px; }
+    .card {
+      margin-top: 28px;
+      padding: 22px 24px;
+      border: 1px solid #ffffff25;
+      border-radius: 16px;
+      background: #ffffff0c;
+    }
+    .card p { margin: 0; }
     a { color: #ffd27f; }
+    @media (max-width: 560px) { body { padding: 24px 18px; } .card { padding: 18px; } }
   </style>
 </head>
 <body>
   <main>
     <p class="tag">TENTANG SAYA</p>
-    <h1>Halo, saya alfachridzy.</h1>
-    <p>Saya adalah siswa kelas XI TKJ. Saya tertarik pada jaringan komputer, teknologi, pemrograman, dan pengembangan web.</p>
-    <h2>Hubungi saya</h2>
+    <h1>Halo, saya alfachridzy 👋</h1>
+    <p class="intro">Saya siswa kelas XI TKJ yang sudah menekuni dunia teknologi dan pengembangan web selama 2 tahun.</p>
+    <p>Saya suka bikin website, ngulik hal-hal baru, dan mengubah ide jadi sesuatu yang bisa diklik. Kalau lagi tidak ngoding, biasanya saya masih mikirin kenapa tadi bisa error.</p>
+    <h2>Yang lagi saya pelajari</h2>
+    <p>Pengembangan web, desain antarmuka, dan dunia jaringan komputer lewat TKJ. Pelan-pelan, yang penting bukan cuma jalan di laptop sendiri.</p>
+    <div class="card">
+      <p><strong>Prinsip debugging:</strong> kalau bug-nya belum ketemu, mungkin dia lagi main petak umpet. 😄</p>
+    </div>
+    <h2>Yuk, ngobrol</h2>
     <p><a href="mailto:zandygege@gmail.com">zandygege@gmail.com</a></p>
   </main>
 </body>
