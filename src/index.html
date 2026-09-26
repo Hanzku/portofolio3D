@@ -66,6 +66,14 @@
                 <label>Email<input name="email" type="email" autocomplete="email" required></label>
                 <label>Subjek<input name="subject" type="text" required></label>
                 <label>Pesan<textarea name="message" rows="3" required></textarea></label>
+                <div class="contact-captcha" role="group" aria-labelledby="captcha-label">
+                    <label id="captcha-label" for="captcha-answer">CAPTCHA</label>
+                    <div class="contact-captcha-row">
+                        <span class="contact-captcha-question" id="captcha-question" aria-live="polite"></span>
+                        <input id="captcha-answer" name="captcha" type="number" inputmode="numeric"
+                            autocomplete="off" placeholder="Masukkan jawaban" required>
+                    </div>
+                </div>
                 <button class="contact-submit" type="submit">Kirim Pesan</button>
                 <p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
             </form>

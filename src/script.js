@@ -9,11 +9,37 @@ const WEB3FORMS_ACCESS_KEY = process.env.WEB3FORMS_ACCESS_KEY || "";
 const contactForm = document.getElementById("contact-form");
 const contactStatus = document.getElementById("contact-status");
 const contactSubmit = contactForm.querySelector('[type="submit"]');
+const captchaQuestion = document.getElementById("captcha-question");
+const captchaAnswer = document.getElementById("captcha-answer");
+let correctCaptchaAnswer;
 
 const showContactMessage = (message, state = "") => {
   contactStatus.textContent = message;
   contactStatus.dataset.state = state;
 };
+
+const createCaptcha = () => {
+  const operators = ["+", "−", "×"];
+  const operator = operators[Math.floor(Math.random() * operators.length)];
+  let firstNumber = Math.floor(Math.random() * 12) + 1;
+  let secondNumber = Math.floor(Math.random() * 12) + 1;
+
+  if (operator === "−" && secondNumber > firstNumber) {
+    [firstNumber, secondNumber] = [secondNumber, firstNumber];
+  }
+
+  correctCaptchaAnswer =
+    operator === "+"
+      ? firstNumber + secondNumber
+      : operator === "−"
+      ? firstNumber - secondNumber
+      : firstNumber * secondNumber;
+
+  captchaQuestion.textContent = `${firstNumber} ${operator} ${secondNumber} = ?`;
+  captchaAnswer.value = "";
+};
+
+createCaptcha();
 
 contactForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -31,6 +57,20 @@ contactForm.addEventListener("submit", async (event) => {
   if (!emailPattern.test(values.email.trim())) {
     showContactMessage("Format email tidak valid.", "error");
     contactForm.elements.email.focus();
+    return;
+  }
+  if (!String(values.captcha || "").trim()) {
+    showContactMessage("CAPTCHA wajib dijawab.", "error");
+    captchaAnswer.focus();
+    return;
+  }
+  if (
+    !Number.isInteger(Number(values.captcha)) ||
+    Number(values.captcha) !== correctCaptchaAnswer
+  ) {
+    showContactMessage("Jawaban CAPTCHA salah.", "error");
+    createCaptcha();
+    captchaAnswer.focus();
     return;
   }
   contactSubmit.disabled = true;
@@ -52,6 +92,7 @@ contactForm.addEventListener("submit", async (event) => {
     if (!response.ok || !result.success) throw new Error("Pengiriman formulir gagal.");
 
     contactForm.reset();
+    createCaptcha();
     showContactMessage("Pesan berhasil dikirim. Terima kasih sudah menghubungi saya.", "success");
   } catch (_error) {
     showContactMessage("Pesan gagal dikirim. Silakan coba lagi.", "error");

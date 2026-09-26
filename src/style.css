@@ -340,6 +340,11 @@ body {
 }
 .contact-form input:focus, .contact-form textarea:focus { border-color: #eda72d; }
 .contact-form textarea { resize: vertical; min-height: 86px; }
+.contact-captcha { grid-column: 1 / -1; display: grid; gap: 7px; }
+.contact-captcha > label { color: #e7edf5; font: .88rem sans-serif; }
+.contact-captcha-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.contact-captcha-question { color: #fff; font: 600 1rem/1.4 sans-serif; min-width: 76px; }
+.contact-captcha-row input { flex: 1 1 160px; min-width: 140px; min-height: 48px; }
 .contact-submit { justify-self: start; min-width: 140px; }
 .contact-submit:disabled { opacity: .65; cursor: wait; }
 .contact-status { align-self: center; min-height: 1.2em; color: #e7edf5; font: .85rem/1.4 sans-serif; }
