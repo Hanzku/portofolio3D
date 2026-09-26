@@ -170,12 +170,14 @@ export default class Navigation {
     window.addEventListener("pointermove", this.onMouseMove, false);
     window.addEventListener("pointerdown", this.onMouseDown, false);
     window.addEventListener("pointerup", this.onMouseUp, false);
+    window.addEventListener("pointercancel", this.onPointerCancel, false);
   }
 
   deactivateControls() {
     window.removeEventListener("keydown", this.onKeyDown, false);
     window.removeEventListener("pointerdown", this.onMouseDown, false);
     window.removeEventListener("pointerup", this.onMouseUp, false);
+    window.removeEventListener("pointercancel", this.onPointerCancel, false);
   }
 
   checkIntersection() {
@@ -216,8 +218,7 @@ export default class Navigation {
   }
 
   onMouseMove = (e) => {
-    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    this.updatePointer(e);
     if (
       this.currentStage == null &&
       !this.isCameraMoving &&
@@ -235,7 +236,23 @@ export default class Navigation {
     this.handleBannerVisibility();
   };
 
-  onMouseDown = () => {
+  updatePointer(event) {
+    const bounds = this.webglElement.getBoundingClientRect();
+    this.mouse.x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;
+    this.mouse.y = -((event.clientY - bounds.top) / bounds.height) * 2 + 1;
+  }
+
+  onMouseDown = (event) => {
+    this.updatePointer(event);
+    if (
+      this.currentStage == null &&
+      !this.isCameraMoving &&
+      this.experience.world?.rubiksCube?.isPlaced &&
+      !this.experience.world?.confetti?.hasExploded &&
+      this.experience.world.resources.loader.resourcesLoaded
+    ) {
+      this.checkIntersection();
+    }
     this.startClick.x = this.mouse.x;
     this.startClick.y = this.mouse.y;
   };
@@ -430,7 +447,8 @@ export default class Navigation {
     }
   };
 
-  onMouseUp = () => {
+  onMouseUp = (event) => {
+    this.updatePointer(event);
     if (
       this.startClick.x == this.mouse.x &&
       this.startClick.y == this.mouse.y
@@ -443,6 +461,10 @@ export default class Navigation {
         this.flyToPosition(this.objectRaycasted);
       }
     }
+    this.startClick.set(null, null);
+  };
+
+  onPointerCancel = () => {
     this.startClick.set(null, null);
   };
 

@@ -82,24 +82,18 @@ document.getElementById("copy-email").addEventListener("click", async () => {
   }
 });
 
-const isMobile =
-  /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  ) || navigator.userAgentData?.mobile;
+const mobileLayout = window.matchMedia(
+  "(max-width: 768px), (pointer: coarse)"
+);
+const updateMobileLayout = () => {
+  document.body.classList.toggle("is-mobile", mobileLayout.matches);
+};
+updateMobileLayout();
+mobileLayout.addEventListener?.("change", updateMobileLayout);
 
-if (window.innerWidth > 768 && !isMobile) {
-  window.experience = new Experience({
-    webglElement: document.querySelector("#webgl"),
-    cssArcadeMachine: document.querySelector("#cssArcadeMachine"),
-    cssLeftMonitor: document.querySelector("#cssLeftMonitor"),
-    cssRightMonitor: document.querySelector("#cssRightMonitor"),
-  });
-} else {
-  document.body.classList.add("is-mobile");
-  window.experience = new Experience({
-    webglElement: document.querySelector("#webgl"),
-    cssArcadeMachine: document.querySelector("#cssArcadeMachine"),
-    cssLeftMonitor: document.querySelector("#cssLeftMonitor"),
-    cssRightMonitor: document.querySelector("#cssRightMonitor"),
-  });
-}
+window.experience = new Experience({
+  webglElement: document.querySelector("#webgl"),
+  cssArcadeMachine: document.querySelector("#cssArcadeMachine"),
+  cssLeftMonitor: document.querySelector("#cssLeftMonitor"),
+  cssRightMonitor: document.querySelector("#cssRightMonitor"),
+});

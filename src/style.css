@@ -12,12 +12,29 @@ html,
 body {
   background-color: #072446;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
 }
 
 #webgl {
-  width: 100vw;
-  height: 100vh;
+  position: fixed;
+  top: var(--visual-viewport-top, 0px);
+  left: var(--visual-viewport-left, 0px);
+  width: var(--visual-viewport-width, 100vw);
+  height: var(--visual-viewport-height, 100dvh);
   pointer-events: auto;
+  touch-action: none;
+}
+
+#cssArcadeMachine,
+#cssLeftMonitor,
+#cssRightMonitor {
+  position: fixed;
+  top: var(--visual-viewport-top, 0px);
+  left: var(--visual-viewport-left, 0px);
+  width: var(--visual-viewport-width, 100vw);
+  height: var(--visual-viewport-height, 100dvh);
 }
 
 #cssArcadeMachine {
@@ -51,7 +68,8 @@ body {
   top: -90px;
   height: 60px;
   left: 0;
-  width: 100vw;
+  width: 100%;
+  box-sizing: border-box;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -83,8 +101,8 @@ body {
 .circular-button {
   position: absolute;
   display: block;
-  bottom: 50px;
-  left: 50px;
+  bottom: calc(50px + env(safe-area-inset-bottom));
+  left: calc(50px + env(safe-area-inset-left));
   width: 100px;
   opacity: 0;
   height: 100px;
@@ -120,7 +138,7 @@ body {
   opacity: 0;
   position: absolute;
   width: 100vw;
-  bottom: 100px;
+  bottom: calc(100px + env(safe-area-inset-bottom));
   display: flex;
   justify-content: center;
   z-index: 1;
@@ -160,7 +178,7 @@ body {
   opacity: 0;
   color: #eda72d;
   position: fixed;
-  bottom: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
@@ -179,8 +197,8 @@ body {
     0.2s ease-in-out, background-image 1s ease-in-out;
   position: absolute;
   display: block;
-  bottom: 50px;
-  right: 50px;
+  bottom: calc(50px + env(safe-area-inset-bottom));
+  right: calc(50px + env(safe-area-inset-right));
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -260,7 +278,10 @@ body {
 }
 .contact-panel {
   position: fixed;
-  inset: 0;
+  top: var(--visual-viewport-top, 0px);
+  left: var(--visual-viewport-left, 0px);
+  width: var(--visual-viewport-width, 100vw);
+  height: var(--visual-viewport-height, 100dvh);
   z-index: 5;
   display: grid;
   place-items: center;
@@ -290,7 +311,7 @@ body {
 }
 .contact-panel.is-visible .contact-card { transform: translateY(0) scale(1); }
 .contact-close {
-  position: absolute; top: 12px; right: 16px; width: 40px; height: 40px;
+  position: absolute; top: 12px; right: 16px; width: 44px; height: 44px;
   color: #eda72d; background: transparent; border: 0; font: 32px/1 sans-serif; cursor: pointer;
 }
 .contact-eyebrow { color: #eda72d; font: 600 0.75rem/1.4 sans-serif; letter-spacing: 0.18em; }
@@ -326,21 +347,41 @@ body {
 .contact-status[data-state="success"] { color: #a6f0ba; }
 @media (max-width: 900px) {
   .banner { height: auto; min-height: 52px; padding: 8px 10px; overflow-x: auto; justify-content: flex-start; }
-  .banner-link { margin: 0 10px; }
+  .banner { width: 100%; max-width: 100%; scrollbar-width: none; overscroll-behavior-x: contain; touch-action: pan-x; }
+  .banner::-webkit-scrollbar { display: none; }
+  .banner-link { min-height: 44px; flex: 0 0 auto; margin: 0 10px; }
   .contact-details { grid-template-columns: 1fr 1fr; }
   .contact-details p:last-child { grid-column: 1 / -1; }
 }
-body.is-mobile .banner { top: 0 !important; }
+body.is-mobile .banner {
+  top: 0 !important;
+  min-height: calc(52px + env(safe-area-inset-top));
+  padding-top: calc(8px + env(safe-area-inset-top));
+}
 @media (max-width: 560px) {
   .contact-panel { padding: 10px; }
-  .contact-card { border-radius: 16px; }
+  .contact-card {
+    max-height: min(calc(var(--visual-viewport-height, 100dvh) - 20px), 900px);
+    border-radius: 16px;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
   .contact-details, .contact-form { grid-template-columns: 1fr; }
   .contact-details p:last-child, .contact-form label:nth-of-type(4) { grid-column: auto; }
   .contact-actions { flex-wrap: wrap; }
   .contact-actions a, .contact-actions button { flex: 1; }
+  .contact-actions a, .contact-actions button, .contact-submit, .contact-close { min-height: 44px; }
+  .contact-form input, .contact-form textarea { min-height: 48px; font-size: 16px; }
+  .contact-form textarea { min-height: 100px; }
   .rubik-message { width: 90%; font-size: 1rem; }
-  .circular-button { width: 64px; height: 64px; bottom: 20px; left: 20px; }
-  .button-row { bottom: 30px; }
+  .circular-button {
+    width: 64px;
+    height: 64px;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    left: calc(20px + env(safe-area-inset-left));
+  }
+  .audio-button { right: calc(20px + env(safe-area-inset-right)); }
+  .button-row { bottom: calc(30px + env(safe-area-inset-bottom)); }
   .circular-button-whiteboard { width: 54px; height: 54px; margin: 0 5px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } }

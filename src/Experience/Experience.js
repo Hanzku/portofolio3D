@@ -34,7 +34,7 @@ export default class Experience {
     this.time = new Time();
     this.clock = new Clock();
     this.raycaster = new Raycaster();
-    this.sizes = new Sizes();
+    this.sizes = new Sizes(this.webglElement);
     this.mouse = new Vector2();
     this.setConfig();
     this.setScene();
@@ -55,12 +55,18 @@ export default class Experience {
     this.config = {};
 
     // Pixel ratio
-    this.config.pixelRatio = Math.min(Math.max(window.devicePixelRatio, 1), 2);
+    this.config.isMobile = window.matchMedia(
+      "(max-width: 768px), (pointer: coarse)"
+    ).matches;
+    this.config.pixelRatio = Math.min(
+      Math.max(window.devicePixelRatio || 1, 1),
+      this.config.isMobile ? 1.5 : 2
+    );
 
     // Width and height
     const boundings = this.webglElement.getBoundingClientRect();
-    this.config.width = boundings.width;
-    this.config.height = boundings.height || window.innerHeight;
+    this.config.width = Math.max(1, boundings.width || this.sizes.width);
+    this.config.height = Math.max(1, boundings.height || this.sizes.height);
     this.config.smallestSide = Math.min(this.config.width, this.config.height);
     this.config.largestSide = Math.max(this.config.width, this.config.height);
   }
@@ -108,12 +114,15 @@ export default class Experience {
   resize() {
     // Config
     const boundings = this.webglElement.getBoundingClientRect();
-    this.config.width = boundings.width;
-    this.config.height = boundings.height;
+    this.config.width = Math.max(1, boundings.width || this.sizes.width);
+    this.config.height = Math.max(1, boundings.height || this.sizes.height);
     this.config.smallestSide = Math.min(this.config.width, this.config.height);
     this.config.largestSide = Math.max(this.config.width, this.config.height);
 
-    this.config.pixelRatio = Math.min(Math.max(window.devicePixelRatio, 1), 2);
+    this.config.pixelRatio = Math.min(
+      Math.max(window.devicePixelRatio || 1, 1),
+      this.config.isMobile ? 1.5 : 2
+    );
 
     if (this.camera) this.camera.resize();
 

@@ -38,8 +38,8 @@ export default class Renderer {
     // Renderer
     this.clearColor = new Color(0x072446).convertSRGBToLinear();
     this.instance = new WebGLRenderer({
-      antialias: true,
-      powerPreference: "high-performance",
+      antialias: !this.config.isMobile,
+      powerPreference: this.config.isMobile ? "low-power" : "high-performance",
     });
     this.instance.domElement.style.position = "absolute";
     this.instance.domElement.style.top = 0;
@@ -82,7 +82,7 @@ export default class Renderer {
       this.camera.instance
     );
     this.postProcess.outlinePass = new OutlinePass(
-      new Vector2(window.innerWidth, window.innerHeight),
+      new Vector2(this.config.width, this.config.height),
       this.scene,
       this.camera.instance
     );
@@ -99,7 +99,11 @@ export default class Renderer {
       this.config.width,
       this.config.height,
       {
-        samples: this.instance.getPixelRatio() >= 2 ? 8 : 4,
+        samples: this.config.isMobile
+          ? 0
+          : this.instance.getPixelRatio() >= 2
+          ? 8
+          : 4,
         generateMipmaps: false,
         minFilter: LinearFilter,
         magFilter: LinearFilter,

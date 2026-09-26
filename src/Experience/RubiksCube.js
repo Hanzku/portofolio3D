@@ -109,6 +109,7 @@ class RubiksCube {
     window.addEventListener("pointermove", this.onPointerMove);
     window.addEventListener("pointerdown", this.onPointerDown);
     window.addEventListener("pointerup", this.onPointerUp);
+    window.addEventListener("pointercancel", this.onPointerCancel);
     this.isActive = true;
   }
 
@@ -117,6 +118,7 @@ class RubiksCube {
     window.removeEventListener("pointermove", this.onPointerMove);
     window.removeEventListener("pointerdown", this.onPointerDown);
     window.removeEventListener("pointerup", this.onPointerUp);
+    window.removeEventListener("pointercancel", this.onPointerCancel);
     this.isActive = false;
   }
 
@@ -268,11 +270,20 @@ class RubiksCube {
   }
 
   onPointerMove = (event) => {
-    this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-    this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    this.updatePointer(event);
   };
 
-  onPointerDown = () => {
+  updatePointer(event) {
+    const bounds = this.experience.webglElement.getBoundingClientRect();
+    this.pointer.x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;
+    this.pointer.y = -((event.clientY - bounds.top) / bounds.height) * 2 + 1;
+  }
+
+  onPointerDown = (event) => {
+    this.updatePointer(event);
+    this.raycaster.setFromCamera(this.pointer, this.camera);
+    const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+    this.objectRaycasted = intersects.length ? intersects[0] : null;
     if (
       this.objectRaycasted &&
       this.objectRaycasted.object.parent.isRubik &&
@@ -289,8 +300,10 @@ class RubiksCube {
       this.firstClickPosition = new Vector2(this.pointer.x, this.pointer.y);
     }
   };
-  onPointerUp = () => {
+  onPointerUp = (event) => {
+    this.updatePointer(event);
     if (this.draggingg) {
+      this.draggingg = false;
       const currentClickPosition = new Vector2(this.pointer.x, this.pointer.y);
       const distanceVector = new Vector2(
         currentClickPosition.x - this.firstClickPosition.x,
@@ -396,6 +409,9 @@ class RubiksCube {
       this.draggingg = false;
       this.objectClicked = null;
     }
+  };
+  onPointerCancel = () => {
+    this.draggingg = false;
   };
 
   getRealNormal(normal) {
