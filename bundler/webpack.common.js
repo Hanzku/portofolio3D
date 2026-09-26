@@ -1,8 +1,29 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
+const fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
+
+const localEnvPath = path.resolve(__dirname, "../.env");
+if (fs.existsSync(localEnvPath)) {
+  const envLines = fs.readFileSync(localEnvPath, "utf8").split(/\r?\n/);
+  envLines.forEach((line) => {
+    const match = line.match(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/);
+    if (!match || typeof process.env[match[1]] !== "undefined") return;
+
+    let value = match[2];
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    } else {
+      value = value.replace(/\s+#.*$/, "").trim();
+    }
+    process.env[match[1]] = value;
+  });
+}
 
 module.exports = {
   entry: path.resolve(__dirname, "../src/script.js"),

@@ -39,6 +39,7 @@ export default class Resources extends EventEmitter {
     this.toLoad = 0;
     this.loaded = 0;
     this.items = {};
+    this.hasShownStart = false;
   }
 
   /**
@@ -149,6 +150,9 @@ export default class Resources extends EventEmitter {
       action: (_resource) => {
         audioLoader.load(_resource.source, (buffer) => {
           this.fileLoadEnd(_resource, buffer);
+        }, undefined, () => {
+          console.warn(`Unable to load optional audio: ${_resource.source}`);
+          this.fileLoadEnd(_resource, null);
         });
       },
     });
@@ -233,7 +237,8 @@ export default class Resources extends EventEmitter {
     const degrees = (this.loaded / this.toLoad) * 360;
 
     this.loadingScreen.style.setProperty("--p", degrees + "deg");
-    if (this.loaded == this.toLoad) {
+    if (this.loaded == this.toLoad && !this.hasShownStart) {
+      this.hasShownStart = true;
       this.loadingScreen.classList.add("finished-load");
 
       setTimeout(() => {

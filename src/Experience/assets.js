@@ -61,6 +61,12 @@ export default [
         ],
         type: "cubeTexture",
       },
+    ],
+  },
+  {
+    name: "audio",
+    data: {},
+    items: [
       { name: "markerOpen", source: "assets/sounds/marker-open.mp3" },
       { name: "eraser", source: "assets/sounds/eraser.mp3" },
       { name: "confetti", source: "assets/sounds/confetti.mp3" },
@@ -85,7 +91,6 @@ export default [
       { name: "whoosh", source: "assets/sounds/whoosh.mp3" },
       { name: "select1", source: "assets/sounds/select1.ogg" },
       { name: "select2", source: "assets/sounds/select2.ogg" },
-      { name: "screnshot", source: "assets/social/screenshot.png" },
     ],
   },
 ];

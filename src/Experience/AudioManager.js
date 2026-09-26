@@ -11,7 +11,30 @@ export default class AudioManager {
     this.isMuted = false;
     this.hasStarted = false;
     this.audioListeners = [];
+    this.listener = null;
+    this.pendingLoop = null;
+    this.resources.on("progress", (_group, resource) => {
+      if (
+        !this.isMuted &&
+        resource.name === this.pendingLoop?.name &&
+        this.resources.items[resource.name]
+      ) {
+        const pendingLoop = this.pendingLoop;
+        this.pendingLoop = null;
+        this.playLoopAudio(pendingLoop.name, pendingLoop.volume);
+      }
+    });
     this.setAudioManager();
+  }
+  getListener() {
+    if (!this.listener) {
+      this.listener = new THREE.AudioListener();
+      this.camera.add(this.listener);
+    }
+    if (this.listener.context.state === "suspended") {
+      this.listener.context.resume().catch(() => {});
+    }
+    return this.listener;
   }
   setAudioManager() {
     this.audioButton.addEventListener("click", () => {
@@ -38,6 +61,11 @@ export default class AudioManager {
       const sound = audioListener.sound;
       sound.setVolume(audioListener.volume);
     });
+    if (this.pendingLoop && this.resources.items[this.pendingLoop.name]) {
+      const pendingLoop = this.pendingLoop;
+      this.pendingLoop = null;
+      this.playLoopAudio(pendingLoop.name, pendingLoop.volume);
+    }
   }
 
   playSingleAudio(audioName, volume) {
@@ -45,8 +73,8 @@ export default class AudioManager {
       return;
     }
     const buffer = this.resources.items[audioName];
-    const listener = new THREE.AudioListener();
-    this.camera.add(listener);
+    const listener = this.getListener();
+    if (!buffer) return;
 
     const sound = new THREE.Audio(listener);
     sound.setBuffer(buffer);
@@ -60,16 +88,16 @@ export default class AudioManager {
       if (index !== -1) {
         this.audioListeners.splice(index, 1);
       }
-      const indexCamera = this.camera.children.indexOf(listener);
-      if (indexCamera !== -1) {
-        this.camera.children.splice(indexCamera, 1);
-      }
     };
   }
   playLoopAudio(audioName, volume) {
+    if (this.isMuted) return;
     const buffer = this.resources.items[audioName];
-    const listener = new THREE.AudioListener();
-    this.camera.add(listener);
+    if (!buffer) {
+      this.pendingLoop = { name: audioName, volume };
+      return;
+    }
+    const listener = this.getListener();
 
     const sound = new THREE.Audio(listener);
     sound.setBuffer(buffer);
@@ -82,10 +110,6 @@ export default class AudioManager {
       const index = this.audioListeners.indexOf(audioElement);
       if (index !== -1) {
         this.audioListeners.splice(index, 1);
-      }
-      const indexCamera = this.camera.children.indexOf(listener);
-      if (indexCamera !== -1) {
-        this.camera.children.splice(indexCamera, 1);
       }
     };
   }

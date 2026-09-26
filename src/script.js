@@ -78,24 +78,41 @@ contactForm.addEventListener("submit", async (event) => {
   showContactMessage("Mengirim pesan...");
 
   try {
-    const response = await fetch("/api/contact", {
+    if (!WEB3FORMS_ACCESS_KEY.trim()) {
+      throw new Error(
+        "Konfigurasi email belum tersedia. Tambahkan WEB3FORMS_ACCESS_KEY di environment Production Vercel lalu deploy ulang."
+      );
+    }
+
+    const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
+        access_key: WEB3FORMS_ACCESS_KEY,
         name: values.name.trim(),
         email: values.email.trim(),
         subject: values.subject.trim(),
         message: values.message.trim(),
+        from_name: "Portofolio alfachridzy",
       }),
     });
-    const result = await response.json();
-    if (!response.ok || !result.success) throw new Error("Pengiriman formulir gagal.");
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.success) {
+      throw new Error(
+        result.body?.message || result.message || "Web3Forms menolak pengiriman pesan."
+      );
+    }
 
     contactForm.reset();
     createCaptcha();
     showContactMessage("Pesan berhasil dikirim. Terima kasih sudah menghubungi saya.", "success");
-  } catch (_error) {
-    showContactMessage("Pesan gagal dikirim. Silakan coba lagi.", "error");
+  } catch (error) {
+    showContactMessage(
+      error instanceof TypeError
+        ? "Tidak dapat terhubung ke Web3Forms. Periksa koneksi lalu coba lagi."
+        : error.message || "Pesan gagal dikirim. Silakan coba lagi.",
+      "error"
+    );
   } finally {
     contactSubmit.disabled = false;
     contactSubmit.textContent = "Kirim Pesan";
